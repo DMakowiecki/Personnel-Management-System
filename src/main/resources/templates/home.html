@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Roków Akademickich</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        h1 {
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: .75rem;
+            vertical-align: top;
+        }
+
+        .delete-btn {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .add-btn {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+        }
+        .navbar-nav {
+            align-items: center;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <span class="navbar-brand">PANS Jarosław</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadra">Kadra</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/przedmioty">Przedmioty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadragodzinyy">Godziny</a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}" class = "btn btn-danger">Wyloguj</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+<h1>Lista Roczników Studiów</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th>Nazwa Roku</th>
+        <th>Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="rok, iterStat : ${listaRokowAkademickich}">
+        <td>
+            <a class="btn btn-link text-dark" th:href="@{/plany-studiow/{rok}(rok=${rok.rok})}" th:text="${rok.rok}"></a>
+        </td>
+
+        <td>
+            <form action="#" th:action="@{/deleteRokAkademicki}" th:object="${rok}" method="post">
+                <input type="hidden" th:name="id" th:value="${rok.id}" />
+                <button class="btn btn-danger delete-btn" type="submit">Usuń</button>
+            </form>
+
+        </td>
+    </tr>
+</table>
+<h2>Dodaj nowy rocznik:</h2>
+<form action="#" th:action="@{/addRokAkademicki}" th:object="${nowyRok}" method="post">
+    <div class="form-group">
+        <label for="nazwaRoku">Nazwa roku:</label>
+        <input type="text" class="form-control" id="nazwaRoku" th:field="*{rok}">
+    </div>
+    <button class="btn btn-primary add-btn" type="submit">Dodaj</button>
+</form>
+</div>
+</body>
+</html>

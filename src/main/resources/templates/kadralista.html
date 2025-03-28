@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kadra Lista</title>
+</head>
+<body>
+<h1>Dane z formularza:</h1>
+<h2>Znalezione przedmioty:</h2>
+<ul>
+    <li th:each="przedmiot : ${zgadzajacePrzedmioty}">
+        <span th:text="${przedmiot.przedmiot.nazwa}"></span>: <span th:text="${przedmiot.liczbaGodzin}"></span> godzin
+    </li>
+</ul>
+
+<h2>Suma godzin:</h2>
+<p th:text="${sumaGodzin}"></p>
+
+</body>
+</html>

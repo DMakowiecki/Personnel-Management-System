@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły kierunku</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            color: #343a40;
+        }
+
+        h1 {
+            padding-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: .75rem;
+            vertical-align: top;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,.05);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,0,0,.075);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+        }
+        .detail-form {
+            margin-bottom: 20px;
+        }
+        .navbar-nav {
+            align-items: center;
+        }
+        .formBox {
+            width: 500px;
+            margin-bottom: 30px;
+        }
+        .heading-primary {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .centerBox {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+        .xd {
+            display: flex;
+            gap: 200px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            background-color: #495057;
+            width: 100%;
+        }
+        .xd a {
+            color: #fff;
+            transition: 0.3s all;
+            padding: 10px;
+        }
+        .xd a:hover {
+            color: grey;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        #szczegolyProwadzacegoBOX {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <span class="navbar-brand">PANS Jarosław</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadra">Kadra</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/przedmioty">Przedmioty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadragodzinyy">Godziny</a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}" class = "btn btn-danger">Wyloguj</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="xd">
+    <a class="nav-link" href="#" id="link-podsumowanie">Podsumowanie</a>
+    <a class="nav-link" href="#" id="link-szczegoly">Szczegóły</a>
+</div>
+
+<div class="container" id="szczegolyProwadzacegoBOX">
+    <h1 class="heading-primary">Szczegóły Prowadzącego</h1>
+    <div class="container formBox">
+    <form action="#"  method="post" th:action="@{/szukaj}">
+        <select name="kadra" class="form-control">
+            <option value="">Wybierz prowadzącego</option>
+            <option th:each="kadra : ${listaKadry}" th:value="${kadra.id}" th:text="${ kadra.imie+' '+kadra.nazwisko}"></option> <!-- Adjust value and text accordingly -->
+        </select>
+        <div class="form-group">
+            <label for="rokakademicki">Rok akademicki</label>
+
+            <input type="text" id="rokakademicki" name="rokAkademicki" class="form-control" required >
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+    <div class="container">
+        <div class="centerBox">
+        <h1 th:if="${prowadzacy != null}" th:text="${'Prowadzący: ' + prowadzacy.getImie() + ' ' + prowadzacy.getNazwisko()}"></h1>
+        <h1 th:unless="${prowadzacy != null}">Prowadzący</h1>
+        <h2 th:if="${sumaGodzin !=null}" style="margin-bottom: 30px;" th:text="${'Suma godzin: '+sumaGodzin}"></h2>
+        <h2 style="margin-bottom: 30px;" th:unless="${sumaGodzin !=null}">Suma godzin: </h2>
+        <h2>Znalezione przedmioty</h2>
+        </div>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+<!--                <th>Kierunek</th>-->
+                <th>Nazwa przedmiotu</th>
+                <th>Typ</th>
+                <th>Liczba godzin</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="przedmiot : ${zgadzajacePrzedmioty}">
+<!--                <td th:text="${przedmiot.przedmiot.}"></td>-->
+                <td th:text="${przedmiot.przedmiot.nazwa}"></td>
+                <td th:text="${przedmiot.typ}"></td>
+                <td th:text="${przedmiot.liczbaGodzin}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container" id="podsumowanieProwadzacychBOX">
+    <h1 class="heading-primary">Podsumowanie godzin w danym roku akademickim</h1>
+    <div class="centerBox">
+     <form action="#"  method="post" th:action="@{/podsumowanie}">
+            <div class="form-group">
+                <label for="rokakademicki">Rok akademicki</label>
+                <input type="text" id="rokakademicki2" name="rokAkademicki" class="form-control" required >
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+        <h2>Podsumowanie</h2>
+    </div>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Prowadzący</th>
+            <th>Liczba godzin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterujemy po mapie podsumowanieGodzinProwadzacych -->
+        <tr th:each="entry : ${podsumowanieGodzinProwadzacych}">
+            <!-- Wyświetlamy imię i nazwisko prowadzącego -->
+            <td th:text="${entry.key.nazwisko + ' ' + entry.key.imie}"></td>
+            <!-- Wyświetlamy sumę godzin dla prowadzącego -->
+            <td th:text="${entry.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabSzczegoly = document.getElementById('link-szczegoly');
+        const tabPodsumowanie = document.getElementById('link-podsumowanie');
+        const szczegolyBox = document.getElementById('szczegolyProwadzacegoBOX');
+        const podsumowanieBox = document.getElementById('podsumowanieProwadzacychBOX');
+
+        tabSzczegoly.addEventListener('click', function(event) {
+            event.preventDefault();
+            szczegolyBox.style.display = 'block';
+            podsumowanieBox.style.display = 'none';
+        });
+        tabPodsumowanie.addEventListener('click', function(event) {
+            event.preventDefault();
+            szczegolyBox.style.display = 'none';
+            podsumowanieBox.style.display = 'block';
+        });
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

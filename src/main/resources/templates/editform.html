@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edycja pracownika</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        h1 {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: .75rem;
+            vertical-align: top;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,.05);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,0,0,.075);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+        }
+
+        form {
+            margin: 0 auto;
+            width: 50%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .navbar-nav {
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <span class="navbar-brand">PANS Jarosław</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadra">Kadra</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/przedmioty">Przedmioty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadragodzinyy">Godziny</a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}" class = "btn btn-danger">Wyloguj</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<h1>Edycja danych pracownika</h1>
+<form action="#" th:action="@{/saveEditedKadra}" th:object="${pracownik}" method="post">
+    <div style="text-align: center;">
+        <input type="hidden" th:field="*{id}" />
+        <label for="imie">Imię:</label>
+        <input class="form-control" type="text" id="imie" th:field="*{imie}" />
+        <label for="nazwisko">Nazwisko:</label>
+        <input class="form-control" type="text" id="nazwisko" th:field="*{nazwisko}" />
+        <button type="submit">Zapisz zmiany</button>
+    </div>
+</form>
+</body>
+</html>

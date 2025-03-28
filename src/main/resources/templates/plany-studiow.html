@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Kierunków Studiów</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        h1 {
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: .75rem;
+            vertical-align: top;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,.05);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,0,0,.075);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+        }
+        .navbar-nav {
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <span class="navbar-brand">PANS Jarosław</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadra">Kadra</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/przedmioty">Przedmioty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadragodzinyy">Godziny</a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}" class = "btn btn-danger">Wyloguj</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <h1>Lista Kierunków Studiów</h1>
+
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa Kierunku</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="plan : ${planyStudiow}">
+            <td>
+                <a class="text-dark" th:href="@{'/detale-kierunku/' + ${rok.getId()}}" th:text="${plan.kierunekStudiow.nazwaKierunku}"></a>
+            </td>
+
+        </tr>
+
+
+        </tbody>
+    </table>
+    <h2>Dodaj nowy kierunek do planu</h2>
+    <form action="#" th:action="@{/addMajorToYear}" method="post" class="border p-4 rounded bg-light">
+        <input type="hidden" name="rokId" th:value="${rok.id}" />
+        <div class="form-group">
+            <label for="nowyKierunekId">Wybierz kierunek:</label>
+            <select id="nowyKierunekId" name="nowyKierunekId" class="form-control">
+                <option value="">Wybierz kierunek...</option>
+                <option th:each="kierunek : ${kierunkiStudiow}" th:value="${kierunek.idKierunku}" th:text="${kierunek.nazwaKierunku}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Dodaj</button>
+    </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

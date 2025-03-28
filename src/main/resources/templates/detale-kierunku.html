@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły kierunku</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            color: #343a40;
+        }
+
+        h1 {
+            padding-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+        }
+        .detail-form {
+            margin-bottom: 20px;
+        }
+        .navbar-nav {
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <span class="navbar-brand">PANS Jarosław</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadra">Kadra</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/przedmioty">Przedmioty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kadragodzinyy">Godziny</a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}" class = "btn btn-danger">Wyloguj</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+
+    <h1>Szczegóły kierunku</h1>
+    <form class="detail-form" action="/przypiszPrzedmiot" method="post" th:object="${szczegolyPrzedmiotuDTO}">
+        <div class="form-group">
+            <label for="nazwaPrzedmiotu">Nazwa przedmiotu:</label>
+            <select id="nazwaPrzedmiotu" name="przedmiotId" class="form-control" required>
+                <option value="">Wybierz przedmiot...</option>
+                <th:block th:each="typ : ${typyPrzedmiotow}">
+                    <option th:value="${typ.przedmiot.id + ':' + typ.id}" th:text="${typ.przedmiot.nazwa + ' - ' + typ.typ}"></option>
+                </th:block>
+            </select>
+        </div>
+        <input type="hidden" name="rok" th:value="${rok.id}"/>
+        <input type="hidden" name="kadraId" th:value="${kadraId}"/>
+
+        <div class="form-group">
+            <label for="numerSemestru">Numer semestru:</label>
+            <input type="number" id="numerSemestru" name="szczegolyPlanuStudiow.numerSemestru" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="rokkademicki">Rok akademicki</label>
+
+            <input type="text" id="rokkademicki" name="szczegolyPlanuStudiow.rokAkademicki" class="form-control" required th:value="${rok.rok}">
+        </div>
+
+
+        <div class="form-group">
+            <label for="imieProwadzacego">Imię prowadzącego:</label>
+            <select id="imieProwadzacego" name="kadraPrzedmioty.kadra.id" class="form-control" required>
+                <option value="">Wybierz prowadzącego...</option>
+                <option th:each="prowadzacy : ${listaProwadzacych}" th:value="${prowadzacy.id}" th:text="${prowadzacy.imie} + ' ' + ${prowadzacy.nazwisko}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Dodaj przedmiot</button>
+    </form>
+
+
+
+    <div th:each="entry : ${przedmiotyWedlugSemestru}">
+        <h2 th:text="'Semestr ' + ${entry.key}"></h2>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th style="width: 25%">Przedmiot</th>
+                <th style="width: 25%">Typ Zajęć</th>
+                <th style="width: 25%">Prowadzący</th>
+                <th style="width: 25%">Liczba Godzin</th>
+                <th style="width: 25%">Rok akademici</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="szczegol : ${entry.value}">
+                <td th:if="${szczegol.idPrzedmiotuTyp != null}" th:text="${szczegol.idPrzedmiotuTyp.przedmiot.nazwa}"></td>
+                <td th:if="${szczegol.idPrzedmiotuTyp != null}" th:text="${szczegol.idPrzedmiotuTyp.typ}"></td>
+                <td>
+        <span th:each="kadraPrzedmiot : ${kadraPrzedmioty}" th:if="${kadraPrzedmiot.przedmiotTyp.id == szczegol.idPrzedmiotuTyp.id}">
+            <span th:text="${kadraPrzedmiot.kadra.imie +' '+kadraPrzedmiot.kadra.nazwisko}"></span>
+        </span>
+                </td>
+
+                <td th:if="${szczegol.idPrzedmiotuTyp != null}" th:text="${szczegol.idPrzedmiotuTyp.liczbaGodzin}"></td>
+                <td th:if="${szczegol.idPrzedmiotuTyp != null}" th:text="${szczegol.rok_akademicki}"></td>
+
+
+            </tr>
+
+
+
+
+
+
+
+
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            margin-top: 100px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            /*background-color: #007bff;*/
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-login {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center login-container">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark">
+                    Login
+                </div>
+                <div class="card-body">
+                    <form action="#" th:action="@{/authenticateTheUser}" method="post">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-login">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
